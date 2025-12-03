@@ -2,6 +2,7 @@
 
 use App\Models\Product;
 use App\Models\Hold;
+use App\Services\HoldService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -41,7 +42,7 @@ it('restores product quantity when hold expires', function () {
         'status' => 'active',
     ]);
 $product->decrement('available_quantity', 5);
-    app(\App\Http\Controllers\OrderController::class)->expireHolds();
+    app(HoldService::class)->expireHolds();
 
     $product->refresh();
     expect($product->available_quantity)->toBe(10);
